@@ -11,14 +11,12 @@ import {
   Shield,
   Award,
   Clock,
-  TrendingUp,
   Users,
   BadgeCheck,
   Fingerprint,
   Gift,
   Crown,
   BarChart3,
-  ChevronRight,
   Eye,
   UserCheck,
   Timer
@@ -81,34 +79,6 @@ function StatusPill({ status }) {
       {config.icon}
       {config.label}
     </span>
-  );
-}
-
-function AnimatedCounter({ value, label }) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const duration = 1000;
-    const steps = 60;
-    const increment = value / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= value) {
-        setCount(value);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [value]);
-
-  return (
-    <div className="text-center">
-      <p className="text-2xl font-bold text-aces-purple-900">{count}</p>
-      <p className="text-xs font-medium text-aces-purple-500">{label}</p>
-    </div>
   );
 }
 

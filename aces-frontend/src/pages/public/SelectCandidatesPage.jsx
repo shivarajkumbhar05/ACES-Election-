@@ -9,9 +9,7 @@ import {
   Users,
   AlertCircle,
   ChevronDown,
-  ChevronUp,
-  Sparkles,
-  Shield
+  ChevronUp
 } from "lucide-react";
 import Card from "../../components/Card";
 import Button from "../../components/Button";

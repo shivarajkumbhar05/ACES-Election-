@@ -12,6 +12,7 @@ import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import ManageCandidatesPage from "./pages/admin/ManageCandidatesPage";
 import ManagePositionsPage from "./pages/admin/ManagePositionsPage";
+import VoterTokensPage from "./pages/admin/VoterTokensPage";
 import EndElectionPage from "./pages/admin/EndElectionPage";
 import ResultsPage from "./pages/admin/ResultsPage";
 
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="dashboard" element={<AdminDashboardPage />} />
         <Route path="candidates" element={<ManageCandidatesPage />} />
         <Route path="positions" element={<ManagePositionsPage />} />
+        <Route path="tokens" element={<VoterTokensPage />} />
         <Route path="results" element={<ResultsPage />} />
         <Route path="end-election" element={<EndElectionPage />} />
       </Route>

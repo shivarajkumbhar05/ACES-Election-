@@ -14,8 +14,6 @@ import {
   Camera,
   Search,
   Filter,
-  ChevronDown,
-  Shield,
   Sparkles
 } from "lucide-react";
 import Card from "../../components/Card";
@@ -32,31 +30,6 @@ import {
 import { listPositions } from "../../api/positions";
 
 const EMPTY_FORM = { name: "", enrollmentNo: "", className: "", positionId: "", symbol: null, photo: null };
-
-function StatusBadge({ status }) {
-  const configs = {
-    ACTIVE: {
-      bg: "bg-emerald-100 text-emerald-700 border-emerald-200",
-      icon: <ToggleRight className="h-3.5 w-3.5" />,
-    },
-    INACTIVE: {
-      bg: "bg-aces-purple-100 text-aces-purple-500 border-aces-purple-200",
-      icon: <ToggleLeft className="h-3.5 w-3.5" />,
-    }
-  };
-
-  const config = configs[status] || {
-    bg: "bg-gray-100 text-gray-500 border-gray-200",
-    icon: null,
-  };
-
-  return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-xs font-bold ${config.bg}`}>
-      {config.icon}
-      {status}
-    </span>
-  );
-}
 
 function CandidateCard({ candidate, onEdit, onDelete, onToggleStatus, deletingId }) {
   return (

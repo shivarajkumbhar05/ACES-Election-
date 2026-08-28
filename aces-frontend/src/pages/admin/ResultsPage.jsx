@@ -10,14 +10,9 @@ import {
   BarChart3,
   CheckCircle2,
   XCircle,
-  PieChart,
   TrendingUp,
   Crown,
-  Shield,
-  Sparkles,
-  Download,
-  Printer,
-  Calendar
+  Shield
 } from "lucide-react";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
