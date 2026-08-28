@@ -2,7 +2,7 @@ import { NavLink, Outlet, Navigate, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
-  ListOrdered,
+  Vote,
   BarChart3,
   Power,
   LogOut,
@@ -15,7 +15,7 @@ import { useAdminAuth } from "../context/AdminAuthContext";
 const NAV = [
   { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/candidates", label: "Manage Candidates", icon: Users },
-  { to: "/admin/positions", label: "Manage Positions", icon: ListOrdered },
+  { to: "/admin/tokens", label: "Voter Tokens", icon: Vote },
   { to: "/admin/results", label: "Results", icon: BarChart3 },
   { to: "/admin/end-election", label: "End Election", icon: Power },
 ];
