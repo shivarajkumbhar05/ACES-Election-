@@ -12,8 +12,9 @@ export async function getBallotCandidates() {
   return data.data;
 }
 
-// POST /api/voting/submit → { message, ballotId, submittedAt }
+// API Response: { data: { message, ballotId, submittedAt } }
 export async function submitBallot(selections) {
-  const { data } = await api.post("/voting/submit", { selections });
-  return data.data;
+  const response = await api.post("/voting/submit", { selections });
+  return response.data.data; // ✅ Correct
 }
+
