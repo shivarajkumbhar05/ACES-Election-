@@ -5,11 +5,16 @@ import AuditLog from "../models/AuditLog";
 import { asyncHandler } from "../middleware/errorHandler";
 import { ok, ApiError } from "../utils/apiResponse";
 import { createCandidateSchema, updateCandidateSchema } from "../validators/adminValidators";
-import { uploadCandidatePhoto, uploadCandidateSymbol } from "../config/cloudinary";
 
 function getUploadedFile(req: Request, fieldName: string) {
   const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
   return files?.[fieldName]?.[0];
+}
+
+function toDataUrl(file: Express.Multer.File): string {
+  const mimeType = file.mimetype || "image/png";
+  const base64 = file.buffer.toString("base64");
+  return `data:${mimeType};base64,${base64}`;
 }
 
 async function assertCandidatesEditable() {
@@ -36,10 +41,10 @@ export const createCandidate = asyncHandler(async (req: Request, res: Response) 
   const symbol = getUploadedFile(req, "symbol");
   let symbolUrl: string | undefined;
   if (photo) {
-    photoUrl = await uploadCandidatePhoto(photo.buffer, `${data.enrollmentNo}-${Date.now()}`);
+    photoUrl = toDataUrl(photo);
   }
   if (symbol) {
-    symbolUrl = await uploadCandidateSymbol(symbol.buffer, `${data.enrollmentNo}-${Date.now()}`);
+    symbolUrl = toDataUrl(symbol);
   }
 
   const candidate = await Candidate.create({ ...data, photoUrl, symbolUrl });
@@ -64,10 +69,10 @@ export const updateCandidate = asyncHandler(async (req: Request, res: Response) 
   const photo = getUploadedFile(req, "photo");
   const symbol = getUploadedFile(req, "symbol");
   if (photo) {
-    candidate.photoUrl = await uploadCandidatePhoto(photo.buffer, `${candidate.enrollmentNo}-${Date.now()}`);
+    candidate.photoUrl = toDataUrl(photo);
   }
   if (symbol) {
-    candidate.symbolUrl = await uploadCandidateSymbol(symbol.buffer, `${candidate.enrollmentNo}-${Date.now()}`);
+    candidate.symbolUrl = toDataUrl(symbol);
   }
 
   Object.assign(candidate, data);

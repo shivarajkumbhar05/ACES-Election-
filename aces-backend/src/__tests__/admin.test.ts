@@ -3,8 +3,10 @@ import { MongoMemoryReplSet } from "mongodb-memory-server";
 import request from "supertest";
 import bcrypt from "bcrypt";
 import app from "../app";
+import { connectDB, disconnectDB } from "../config/db";
 import Admin from "../models/Admin";
 import Election from "../models/Election";
+import { ensureBootstrapAdmin } from "../seed/seed";
 
 let replSet: MongoMemoryReplSet;
 
@@ -26,6 +28,30 @@ afterEach(async () => {
 });
 
 describe("Admin auth & election lifecycle", () => {
+  it("bootstraps the admin account when it is missing and then logs in", async () => {
+    const previousUsername = process.env.ADMIN_USERNAME;
+    const previousPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+    const previousPassword = process.env.ADMIN_PASSWORD;
+
+    try {
+      process.env.ADMIN_USERNAME = "admin";
+      process.env.ADMIN_PASSWORD_HASH = await bcrypt.hash("bootstrap-pass", 12);
+      process.env.ADMIN_PASSWORD = "";
+      await Admin.deleteMany({});
+
+      const bootstrap = await ensureBootstrapAdmin();
+      expect(bootstrap.created).toBe(true);
+
+      const res = await request(app).post("/api/admin/login").send({ username: "admin", password: "bootstrap-pass" });
+      expect(res.status).toBe(200);
+      expect(res.body.data.token).toBeDefined();
+    } finally {
+      if (previousUsername === undefined) delete process.env.ADMIN_USERNAME; else process.env.ADMIN_USERNAME = previousUsername;
+      if (previousPasswordHash === undefined) delete process.env.ADMIN_PASSWORD_HASH; else process.env.ADMIN_PASSWORD_HASH = previousPasswordHash;
+      if (previousPassword === undefined) delete process.env.ADMIN_PASSWORD; else process.env.ADMIN_PASSWORD = previousPassword;
+    }
+  });
+
   it("rejects invalid admin login", async () => {
     await Admin.create({ username: "admin", passwordHash: await bcrypt.hash("correct-pass", 10), role: "SUPER_ADMIN" });
     const res = await request(app).post("/api/admin/login").send({ username: "admin", password: "wrong-pass" });

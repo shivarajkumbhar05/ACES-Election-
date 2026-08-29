@@ -26,6 +26,7 @@ import Button from "../../components/Button";
 import Alert from "../../components/Alert";
 import PageTitle from "../../components/PageTitle";
 import { getCurrentElection, getPublishedResults } from "../../api/election";
+import { useVoting } from "../../context/VotingContext";
 
 const INSTRUCTIONS = [
   "Each student can vote only once.",
@@ -96,6 +97,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [publishedResults, setPublishedResults] = useState(null);
+  const { startSession, loadBallot } = useVoting();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -290,7 +292,16 @@ export default function HomePage() {
                   : "bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed opacity-60"
               } font-semibold px-8 py-4 text-lg group relative overflow-hidden`}
               disabled={!isLive}
-              onClick={() => navigate("/vote")}
+              onClick={async () => {
+                if (!isLive) return;
+                try {
+                  await startSession();
+                  await loadBallot();
+                  navigate("/vote/select");
+                } catch (err) {
+                  setError(err.message || "Unable to open the ballot right now.");
+                }
+              }}
             >
               {isLive && (
                 <span className="absolute inset-0 overflow-hidden">
