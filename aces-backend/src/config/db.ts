@@ -2,8 +2,8 @@ const dns = require('dns');
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 import mongoose from "mongoose";
-import { MongoMemoryReplSet } from "mongodb-memory-server";
 import { env } from "./env";
+import type { MongoMemoryReplSet } from "mongodb-memory-server";
 
 let memoryReplSet: MongoMemoryReplSet | null = null;
 
@@ -30,6 +30,7 @@ export async function connectDB(): Promise<void> {
       throw error;
     }
 
+    const { MongoMemoryReplSet } = await import("mongodb-memory-server");
     const dbName = getDatabaseNameFromUri(env.MONGODB_URI);
     memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 1 } });
     await mongoose.connect(memoryReplSet.getUri(dbName));
