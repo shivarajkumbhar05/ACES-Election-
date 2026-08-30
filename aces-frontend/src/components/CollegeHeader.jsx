@@ -95,7 +95,7 @@ export default function CollegeHeader() {
           </div>
           <p className="text-[8px] font-medium tracking-wide text-amber-300/60 sm:text-[9px] md:text-[10px]">
             <span className="relative inline-block">
-              <span className="text-amber-400/70"></span>
+              <span className="text-amber-400/70">Association of Computer Engineering students</span>
               <span className="absolute -bottom-0.5 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
             </span>
           </p>
