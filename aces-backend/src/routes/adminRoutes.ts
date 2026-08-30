@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import { authenticateAdmin, requireRole } from "../middleware/auth";
-import { adminLoginLimiter } from "../middleware/rateLimit";
+import { adminLoginLimiter, exportLimiter } from "../middleware/rateLimit";
 import {
   adminLogin,
   adminDashboard,
@@ -69,13 +69,13 @@ router.post("/tokens/generate", requireRole("SUPER_ADMIN", "ACES_COORDINATOR"), 
 router.post("/tokens/import", requireRole("SUPER_ADMIN", "ACES_COORDINATOR"), importTokens);
 router.get("/tokens", listTokens);
 router.post("/tokens/revoke", requireRole("SUPER_ADMIN", "ACES_COORDINATOR"), revokeToken);
-router.get("/tokens/export", exportUnusedTokens);
+router.get("/tokens/export", requireRole("SUPER_ADMIN", "ACES_COORDINATOR"), exportUnusedTokens);
 router.post("/tokens/qr", generateTokenQr);
 
 // --- Results & reports ---
 router.get("/results", getResults);
 router.post("/results/publish", requireRole("SUPER_ADMIN", "HOD", "ACES_COORDINATOR"), publishResults);
-router.get("/export/excel", exportExcel);
-router.get("/export/pdf", exportPdf);
+router.get("/export/excel", exportLimiter, exportExcel);
+router.get("/export/pdf", exportLimiter, exportPdf);
 
 export default router;

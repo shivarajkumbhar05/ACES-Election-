@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../middleware/errorHandler";
 import { ok } from "../utils/apiResponse";
+import { ApiError } from "../utils/apiResponse";
 import { validateTokenSchema, submitBallotSchema } from "../validators/votingValidators";
 import * as voteService from "../services/voteService";
-import { verifyVotingSession } from "../utils/votingSession";
 
 export const validateToken = asyncHandler(async (req: Request, res: Response) => {
   const { token } = validateTokenSchema.parse(req.body);
@@ -20,10 +20,12 @@ export const getCandidates = asyncHandler(async (req: Request, res: Response) =>
 export const submitVote = asyncHandler(async (req: Request, res: Response) => {
   const { selections } = submitBallotSchema.parse(req.body);
   const election = await voteService.getLiveElection();
-  const header = req.headers.authorization;
-  const session = header?.startsWith("Bearer ")
-    ? verifyVotingSession(header.slice("Bearer ".length))
-    : { electionId: String(election._id) };
-  const result = await voteService.submitBallot(session, selections);
+  
+  // Voting session MUST be provided (enforced by middleware)
+  if (!req.votingSession) {
+    throw new Error("Voting session required but not found");
+  }
+  
+  const result = await voteService.submitBallot(req.votingSession, selections);
   return ok(res, { message: "Vote recorded successfully.", ballotId: result.ballotId, submittedAt: result.submittedAt });
 });

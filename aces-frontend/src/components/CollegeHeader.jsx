@@ -84,6 +84,21 @@ export default function CollegeHeader() {
               </span>
             </div>
           </div>
+
+          {/* Software Credit */}
+          <div className="mt-2 flex items-center justify-center gap-2">
+            <span className="h-px w-6 bg-gradient-to-r from-transparent to-amber-400/20 sm:w-10" />
+            <p className="text-[7px] font-medium tracking-[0.05em] text-amber-400/50 uppercase sm:text-[8px] md:text-[9px]">
+              
+            </p>
+            <span className="h-px w-6 bg-gradient-to-l from-transparent to-amber-400/20 sm:w-10" />
+          </div>
+          <p className="text-[8px] font-medium tracking-wide text-amber-300/60 sm:text-[9px] md:text-[10px]">
+            <span className="relative inline-block">
+              <span className="text-amber-400/70"></span>
+              <span className="absolute -bottom-0.5 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
+            </span>
+          </p>
         </div>
 
         {/* Right Crest */}

@@ -23,3 +23,12 @@ export const adminLoginLimiter = rateLimit({
   legacyHeaders: false,
   message: { success: false, message: "Too many login attempts. Please wait before trying again." },
 });
+
+// Rate limit for export endpoints to prevent abuse and DoS attacks
+export const exportLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Too many export requests. Please wait a few minutes before trying again." },
+});
