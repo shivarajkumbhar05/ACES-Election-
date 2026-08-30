@@ -7,9 +7,10 @@ async function start() {
   try {
     await connectDB();
     await ensureBootstrapAdmin();
-    app.listen(env.PORT, () => {
+    const port = Number(process.env.PORT || env.PORT);
+    app.listen(port, "0.0.0.0", () => {
       // eslint-disable-next-line no-console
-      console.log(`[server] ACES Election Portal API running on port ${env.PORT} (${env.NODE_ENV})`);
+      console.log(`[server] ACES Election Portal API running on port ${port} (${env.NODE_ENV})`);
     });
   } catch (err) {
     // eslint-disable-next-line no-console
