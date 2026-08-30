@@ -1,4 +1,14 @@
 {
+  "name": "aces-election-monorepo",
+  "private": true,
+  "workspaces": [
+    "aces-backend"
+  ],
+  "scripts": {
+    "install:backend": "npm install --prefix aces-backend",
+    "build:backend": "npm --prefix aces-backend run build",
+    "start:backend": "npm --prefix aces-backend run start"
+  },
   "dependencies": {
     "tsx": "^4.23.12"
   }
